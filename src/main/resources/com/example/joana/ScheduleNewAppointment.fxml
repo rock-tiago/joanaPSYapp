@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="10" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.joana.ui.controllers.ScheduleAppointmentController">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+    <!-- Patient Selection -->
+    <HBox spacing="10">
+        <Label text="Patient:"/>
+        <ComboBox fx:id="patientComboBox" promptText="Select patient"/>
+        <Button text="Add New Patient" onAction="#onAddNewPatient"/>
+    </HBox>
+
+    <!-- Date & Time -->
+    <HBox spacing="10">
+        <Label text="Date:"/>
+        <DatePicker fx:id="datePicker"/>
+        <Label text="Time:"/>
+        <TextField fx:id="timeField" promptText="HH:MM"/>
+    </HBox>
+
+    <!-- Notes -->
+    <VBox spacing="5">
+        <Label text="Notes:"/>
+        <TextArea fx:id="notesArea" prefRowCount="5"/>
+    </VBox>
+
+    <!-- Buttons -->
+    <HBox spacing="10">
+        <Button text="Save Appointment" onAction="#onSaveAppointment"/>
+        <Button text="Cancel" onAction="#onCancel"/>
+    </HBox>
+</VBox>
+

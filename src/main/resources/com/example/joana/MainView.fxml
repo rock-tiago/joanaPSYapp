@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.joana.ui.controllers.MainController">
+    <TableView fx:id="patientTable">
+        <columns>
+            <TableColumn text="Name" fx:id="nameCol"/>
+            <TableColumn text="Phone" fx:id="phoneCol"/>
+            <TableColumn text="Email" fx:id="emailCol"/>
+        </columns>
+    </TableView>
+    <HBox spacing="10">
+        <Button text="Schedule Appointment" onAction="#onScheduleAppointment"/>
+        <Button text="Add Patient" onAction="#onAddPatient"/>
+    </HBox>
+</VBox>
