@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -28,6 +29,12 @@ public class PatientController {
 
     private PatientDAO patientDAO;
     private ObservableList<Patient> patientList;
+
+    private Patient addedPatient;
+
+    public Patient getAddedPatient() {
+        return addedPatient;
+    }
 
     public void setDAOs(PatientDAO patientDAO) throws SQLException {
         this.patientDAO = patientDAO;
@@ -51,6 +58,16 @@ public class PatientController {
         });
     }
 
+    public void setPatient(Patient patient) {
+        //TODO finish up updating already existing patient
+        //update already existing patient
+        addedPatient = patient;
+        nameField.setText(patient.getName());
+        phoneField.setText(patient.getPhone());
+        emailField.setText(patient.getEmail());
+        notes.setText(patient.getNotes());
+    }
+
     public void onSavePatient(ActionEvent actionEvent) throws SQLException {
         String name = nameField.getText();
         String phone = phoneField.getText();
@@ -62,21 +79,15 @@ public class PatientController {
             new Alert(Alert.AlertType.WARNING, "Name is required").show();
             return;
         }
-        Patient selected = patientTable.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            selected.setName(name);
-            selected.setPhone(phone);
-            selected.setEmail(email);
-            selected.setNotes(extraNotes);
-            patientDAO.updatePatient(selected);
-        } else {
-            Patient newPatient = new Patient(name, phone, email, extraNotes);
-            patientDAO.addPatient(newPatient);
-            patientList.add(newPatient);
-        }
 
-        clearForm();
-        // TODO: use patientDAO to save new or updated patient
+        addedPatient = new Patient(name, phone, email, extraNotes);
+        patientDAO.addPatient(addedPatient);
+
+        System.out.println("Saving patient: " + name + " / " + email);
+
+        // close dialog
+        Stage stage = (Stage) nameField.getScene().getWindow();
+        stage.close();
 
         System.out.println("Saving patient: " + name + " / " + email);
     }
@@ -88,9 +99,15 @@ public class PatientController {
     public void onDeletePatient(ActionEvent actionEvent) {
         Patient selected = patientTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            patientDAO.deletePatient(selected.getId()); // TODO: implement in DAO
-            patientList.remove(selected);
-            clearForm();
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                    "Delete patient " + selected.getName() + "?",
+                    ButtonType.YES, ButtonType.NO);
+            confirm.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.YES) {
+                    patientDAO.deletePatient(selected.getId()); // DAO call
+                    patientList.remove(selected); // update UI
+                }
+            });
         }
     }
 

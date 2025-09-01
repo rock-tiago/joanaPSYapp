@@ -4,13 +4,17 @@
 <?import javafx.scene.layout.*?>
 
 <VBox spacing="10" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.joana.ui.controllers.MainController">
-    <TableView fx:id="patientTable">
+    <TableView fx:id="patientTable" prefWidth="600" prefHeight="400">
         <columns>
-            <TableColumn text="Name" fx:id="nameCol"/>
-            <TableColumn text="Phone" fx:id="phoneCol"/>
-            <TableColumn text="Email" fx:id="emailCol"/>
+            <TableColumn text="Name" fx:id="nameCol" prefWidth="150"/>
+            <TableColumn text="Phone" fx:id="phoneCol" prefWidth="150"/>
+            <TableColumn text="Email" fx:id="emailCol" prefWidth="150"/>
         </columns>
     </TableView>
+    <HBox spacing="10">
+        <Button text="Update Patient" onAction="#onUpdatePatient"/>
+        <Button text="Delete Patient" onAction="#onDeletePatient"/>
+    </HBox>
     <HBox spacing="10">
         <Button text="Schedule Appointment" onAction="#onScheduleAppointment"/>
         <Button text="Add Patient" onAction="#onAddPatient"/>
