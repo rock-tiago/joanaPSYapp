@@ -10,6 +10,10 @@ public class Patient {
     // Constructors, getters, setters
     public Patient() {}
 
+    public Patient(String name, String phone, String email, String notes) {
+        this(-1, name, phone, email, notes);
+    }
+
     public Patient(int id, String name, String phone, String email, String notes) {
         this.id = id;
         this.name = name;

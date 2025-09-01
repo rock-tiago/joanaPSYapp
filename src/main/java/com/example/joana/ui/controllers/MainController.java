@@ -37,7 +37,15 @@ public class MainController {
     public void onAddPatient() {
         System.out.println("Open Add Patient Dialog here");
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("AddPatient.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/joana/AddPatient.fxml"));
+            Stage stage = new Stage();
+            stage.setScene(new Scene(loader.load()));
+            stage.setTitle("Add Patient");
+
+            PatientController controller = loader.getController();
+            controller.setDAOs(patientDAO);
+
+            stage.showAndWait();
         } catch (Exception e){
             e.printStackTrace();
         }

@@ -36,16 +36,51 @@ public class PatientDAO {
 
     public List<Patient> getAllPatients() throws SQLException {
         List<Patient> patients = new ArrayList<>();
-        ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM patients");
-        while (rs.next()) {
-            patients.add(new Patient(
-                    rs.getInt("id"),
-                    rs.getString("name"),
-                    rs.getString("phone"),
-                    rs.getString("email"),
-                    rs.getString("notes")
-            ));
+        String sql = "SELECT * FROM patients";
+
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Patient patient = new Patient(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("phone"),
+                        rs.getString("email"),
+                        rs.getString("notes")
+                );
+                patients.add(patient);
+            }
         }
         return patients;
     }
+
+    public void updatePatient(Patient patient) {
+        String sql = "UPDATE patients SET name = ?, phone = ?, email = ?, notes = ? WHERE id = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, patient.getName());
+            stmt.setString(2, patient.getPhone());
+            stmt.setString(3, patient.getEmail());
+            stmt.setString(4, patient.getNotes());
+            stmt.setInt(5, patient.getId());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deletePatient(int id) {
+        String sql = "DELETE FROM patients WHERE id = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
