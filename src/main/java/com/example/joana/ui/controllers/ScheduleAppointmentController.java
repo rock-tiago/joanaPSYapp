@@ -5,10 +5,14 @@ import com.example.joana.dao.AppointmentDAO;
 import com.example.joana.dao.PatientDAO;
 import com.example.joana.model.Appointment;
 import com.example.joana.model.Patient;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 public class ScheduleAppointmentController {
@@ -29,8 +33,7 @@ public class ScheduleAppointmentController {
 
     private void loadPatients() {
         try {
-            List<Patient> patients = patientDAO.getAllPatients();
-            patientComboBox.getItems().setAll(patients);
+            patientComboBox.getItems().setAll(patientDAO.getAllPatients());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -44,25 +47,26 @@ public class ScheduleAppointmentController {
     }
 
     @FXML
-    public void onSaveAppointment() {
+    public void onSaveAppointment(ActionEvent event) {
         Patient patient = patientComboBox.getValue();
         if (patient == null) {
-            System.out.println("Select or add a patient first!");
+            MainController.showAlert("Select a patient first!");
             return;
         }
 
-        String date = datePicker.getValue() != null ? datePicker.getValue().toString() : "";
-        String time = timeField.getText();
-        String notes = notesArea.getText();
-
-        Appointment appt = new Appointment(0, patient.getId(), date, time, notes);
-
         try {
+            LocalDate date = datePicker.getValue();
+            LocalTime time = LocalTime.parse(timeField.getText());
+            String notes = notesArea.getText();
+
+            Appointment appt = new Appointment(0, patient.getId(), date, time, notes);
             appointmentDAO.addAppointment(appt);
-            System.out.println("Appointment saved for: " + patient.getName());
+
             closeWindow();
+
         } catch (Exception e) {
             e.printStackTrace();
+            MainController.showAlert("Error saving appointment: " + e.getMessage());
         }
     }
 

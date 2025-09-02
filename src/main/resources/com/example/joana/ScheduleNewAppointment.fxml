@@ -32,8 +32,8 @@
 
     <!-- Buttons -->
     <HBox spacing="10">
-        <Button text="Save Appointment" onAction="#onSaveAppointment"/>
-        <Button text="Cancel" onAction="#onCancel"/>
+        <Button fx:id="saveAppointment" text="Save Appointment" onAction="#onSaveAppointment"/>
+        <Button fx:id="cancel" text="Cancel" onAction="#onCancel"/>
     </HBox>
 </VBox>
 

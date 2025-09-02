@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DatabaseManager {
-    private static final String URL = "jdbc:sqlite:data/appointments.db";
+    private static final String URL = "jdbc:sqlite:psychologist.db";
 
     public static Connection connect() throws SQLException {
         return DriverManager.getConnection(URL);
@@ -19,7 +19,6 @@ public class DatabaseManager {
                 CREATE TABLE IF NOT EXISTS patients (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     name TEXT NOT NULL,
-                    birthdate TEXT,
                     phone TEXT,
                     email TEXT,
                     notes TEXT

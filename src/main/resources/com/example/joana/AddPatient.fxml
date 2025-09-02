@@ -43,7 +43,7 @@
                 <TextField fx:id="emailField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
                 <Label text="Notes:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-                <TextArea fx:id="notes" GridPane.rowIndex="3" GridPane.columnIndex="1"
+                <TextArea fx:id="notesArea" GridPane.rowIndex="3" GridPane.columnIndex="1"
                           prefRowCount="3" wrapText="true"/>
             </GridPane>
 

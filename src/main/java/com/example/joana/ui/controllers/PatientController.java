@@ -24,78 +24,118 @@ public class PatientController {
     @FXML private TextField nameField;
     @FXML private TextField phoneField;
     @FXML private TextField emailField;
-    @FXML private TextArea notes;
+    @FXML private TextArea notesArea;
 
 
     private PatientDAO patientDAO;
     private ObservableList<Patient> patientList;
 
-    private Patient addedPatient;
+    private Patient existingPatient; // For updates
+    private Patient resultPatient;
 
-    public Patient getAddedPatient() {
-        return addedPatient;
+    public Patient getResultPatient() {
+        return resultPatient;
     }
 
     public void setDAOs(PatientDAO patientDAO) throws SQLException {
         this.patientDAO = patientDAO;
+        initializeTable();
+        loadPatients();
+    }
 
-        List<Patient> patients = patientDAO.getAllPatients();
-        patientList = FXCollections.observableArrayList(patients);
+    public void initializeTable() throws SQLException {
+        //List<Patient> patients = patientDAO.getAllPatients();
+        //patientList = FXCollections.observableArrayList(patients);
 
         nameColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getName()));
         phoneColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getPhone()));
         emailColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getEmail()));
 
-        patientTable.setItems(patientList);
+        //patientTable.setItems(patientList);
 
         patientTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
             if (newSel != null) {
                 nameField.setText(newSel.getName());
                 phoneField.setText(newSel.getPhone());
                 emailField.setText(newSel.getEmail());
-                notes.setText(newSel.getNotes());
+                notesArea.setText(newSel.getNotes());
             }
         });
     }
 
+    private void loadPatients() throws SQLException {
+        List<Patient> patients = patientDAO.getAllPatients();
+        patientList = FXCollections.observableArrayList(patients);
+        patientTable.setItems(patientList);
+    }
+
+
     public void setPatient(Patient patient) {
-        //TODO finish up updating already existing patient
-        //update already existing patient
-        addedPatient = patient;
+        this.existingPatient = patient;
+        // Pre-fill form for editing
         nameField.setText(patient.getName());
         phoneField.setText(patient.getPhone());
         emailField.setText(patient.getEmail());
-        notes.setText(patient.getNotes());
+        notesArea.setText(patient.getNotes());
     }
 
-    public void onSavePatient(ActionEvent actionEvent) throws SQLException {
-        String name = nameField.getText();
-        String phone = phoneField.getText();
-        String email = emailField.getText();
-        String extraNotes = notes.getText();
+    @FXML
+    public void onSavePatient(ActionEvent actionEvent) {
+        try {
+            String name = nameField.getText().trim();
+            if (name.isEmpty()) {
+                MainController.showAlert("Name is required");
+                return;
+            }
 
-        // TODO: validate input
-        if (name.isBlank()) {
-            new Alert(Alert.AlertType.WARNING, "Name is required").show();
-            return;
+            Patient selectedPatient = patientTable.getSelectionModel().getSelectedItem();
+
+            if (selectedPatient != null) {
+                // Update existing patient
+                selectedPatient .setName(name);
+                selectedPatient .setPhone(phoneField.getText().trim());
+                selectedPatient .setEmail(emailField.getText().trim());
+                selectedPatient .setNotes(notesArea.getText().trim());
+
+                patientDAO.updatePatient(selectedPatient);
+                resultPatient = selectedPatient;
+
+                patientTable.refresh();
+            } else {
+                // Create new patient
+                Patient newPatient = new Patient(
+                        name,
+                        phoneField.getText().trim(),
+                        emailField.getText().trim(),
+                        notesArea.getText().trim()
+                );
+                patientDAO.addPatient(newPatient);
+                resultPatient = newPatient;
+
+                patientList.add(newPatient);
+                patientTable.getSelectionModel().select(newPatient);
+            }
+
+            closeWindow();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            MainController.showAlert("Error saving patient: " + e.getMessage());
         }
+    }
 
-        addedPatient = new Patient(name, phone, email, extraNotes);
-        patientDAO.addPatient(addedPatient);
+    @FXML
+    public void onCancel() {
+        resultPatient = null;
+        closeWindow();
+    }
 
-        System.out.println("Saving patient: " + name + " / " + email);
-
-        // close dialog
+    private void closeWindow() {
         Stage stage = (Stage) nameField.getScene().getWindow();
         stage.close();
-
-        System.out.println("Saving patient: " + name + " / " + email);
     }
 
-    public void onCancel() {
-        nameField.getScene().getWindow().hide();
-    }
-
+    @FXML
     public void onDeletePatient(ActionEvent actionEvent) {
         Patient selected = patientTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
@@ -104,8 +144,9 @@ public class PatientController {
                     ButtonType.YES, ButtonType.NO);
             confirm.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.YES) {
-                    patientDAO.deletePatient(selected.getId()); // DAO call
-                    patientList.remove(selected); // update UI
+                    patientDAO.deletePatient(selected.getId());
+                    patientList.remove(selected);
+                    clearForm();
                 }
             });
         }
@@ -115,7 +156,6 @@ public class PatientController {
         nameField.clear();
         phoneField.clear();
         emailField.clear();
-        notes.clear();
-        patientTable.getSelectionModel().clearSelection();
+        notesArea.clear();
     }
 }

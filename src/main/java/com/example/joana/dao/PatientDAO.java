@@ -9,6 +9,8 @@ import java.util.List;
 public class PatientDAO {
     private Connection conn;
 
+    public PatientDAO() {}
+
     public PatientDAO(Connection conn) {
         this.conn = conn;
     }
@@ -82,5 +84,26 @@ public class PatientDAO {
         }
     }
 
+
+    public Patient getPatientById(int id) throws SQLException {
+        String sql = "SELECT * FROM patients WHERE id = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Patient(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getString("phone"),
+                            rs.getString("email"),
+                            rs.getString("notes")
+                    );
+                }
+            }
+        }
+        return null; // no patient with this id
+    }
 
 }

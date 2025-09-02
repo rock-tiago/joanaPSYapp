@@ -1,10 +1,13 @@
 package com.example.joana;
 
+import com.example.joana.dao.AppointmentDAO;
 import com.example.joana.dao.PatientDAO;
+import com.example.joana.data.DatabaseManager;
 import com.example.joana.model.Patient;
 import com.example.joana.ui.controllers.MainController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -22,13 +25,15 @@ public class MainApp extends Application {
         // SQLite connection
         Connection conn = DriverManager.getConnection("jdbc:sqlite:psychologist.db");
         PatientDAO patientDAO = new PatientDAO(conn);
+        AppointmentDAO appDAO = new AppointmentDAO(conn);
         patientDAO.createTable();
+        appDAO.createTable();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("MainView.fxml"));
-        Scene scene = new Scene(loader.load(), 600, 400);
-
-        MainController controller = loader.getController();
-        controller.setPatientDAO(patientDAO);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/joana/MainView.fxml"));
+        Parent root = loader.load();
+        MainController ctrl = loader.getController();
+        ctrl.setDAOs(patientDAO, appDAO);
+        Scene scene = new Scene(root, 600, 400);
 
         primaryStage.setTitle("Joana's Scheduler");
         primaryStage.setScene(scene);
@@ -36,6 +41,8 @@ public class MainApp extends Application {
     }
 
     public static void main(String[] args) {
+        System.out.println("=== DATABASE INITIALIZATION ===");
+        DatabaseManager.initialize();
         launch(args);
     }
 }

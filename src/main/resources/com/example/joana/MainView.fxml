@@ -1,22 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox spacing="10" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.joana.ui.controllers.MainController">
-    <TableView fx:id="patientTable" prefWidth="600" prefHeight="400">
-        <columns>
-            <TableColumn text="Name" fx:id="nameCol" prefWidth="150"/>
-            <TableColumn text="Phone" fx:id="phoneCol" prefWidth="150"/>
-            <TableColumn text="Email" fx:id="emailCol" prefWidth="150"/>
-        </columns>
-    </TableView>
-    <HBox spacing="10">
-        <Button text="Update Patient" onAction="#onUpdatePatient"/>
-        <Button text="Delete Patient" onAction="#onDeletePatient"/>
-    </HBox>
-    <HBox spacing="10">
-        <Button text="Schedule Appointment" onAction="#onScheduleAppointment"/>
-        <Button text="Add Patient" onAction="#onAddPatient"/>
-    </HBox>
+<VBox prefHeight="536.0" prefWidth="827.0" spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.joana.ui.controllers.MainController">
+   <children>
+      <HBox prefHeight="373.0" prefWidth="667.0">
+         <children>
+            <ListView fx:id="appointmentList" prefHeight="373.0" prefWidth="377.0" />
+             <TableView fx:id="patientTable" prefHeight="373.0" prefWidth="449.0">
+                 <columns>
+                     <TableColumn fx:id="nameCol" prefWidth="150" text="Name" />
+                     <TableColumn fx:id="phoneCol" prefWidth="150" text="Phone" />
+                     <TableColumn fx:id="emailCol" prefWidth="150" text="Email" />
+                 </columns>
+             </TableView>
+         </children>
+      </HBox>
+      <Pane prefHeight="154.0" prefWidth="667.0">
+         <children>
+             <HBox alignment="CENTER" layoutY="62.0" prefHeight="0.0" prefWidth="667.0" spacing="10">
+                <children>
+                    <Button onAction="#onUpdatePatient" text="Update Patient" />
+                    <Button onAction="#onDeletePatient" text="Delete Patient" />
+                </children>
+             </HBox>
+             <HBox alignment="CENTER" layoutX="-9.0" layoutY="109.0" prefHeight="31.0" prefWidth="680.0" spacing="10">
+                <children>
+                    <Button fx:id="scheduleAppointment" onAction="#onScheduleAppointment" prefHeight="31.0" prefWidth="187.0" text="Schedule Appointment" />
+                    <Button fx:id="addPatient" onAction="#onAddPatient" text="Add Patient" />
+                </children>
+             </HBox>
+         </children>
+      </Pane>
+   </children>
 </VBox>

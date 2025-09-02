@@ -1,15 +1,20 @@
 package com.example.joana.model;
 
+import com.example.joana.dao.PatientDAO;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class Appointment {
     private int id;
     private int patientId;
-    private String date;
-    private String time;
+    private LocalDate date;
+    private LocalTime time;
     private String notes;
 
     public Appointment() {}
 
-    public Appointment(int id, int patientId, String date, String time, String notes) {
+    public Appointment(int id, int patientId, LocalDate date, LocalTime time, String notes) {
         this.id = id;
         this.patientId = patientId;
         this.date = date;
@@ -30,19 +35,19 @@ public class Appointment {
         this.patientId = patientId;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public String getTime() {
+    public LocalTime getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(LocalTime time) {
         this.time = time;
     }
 
