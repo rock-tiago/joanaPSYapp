@@ -14,9 +14,11 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class MainApp extends Application {
 
@@ -37,6 +39,15 @@ public class MainApp extends Application {
 
         primaryStage.setTitle("Joana's Scheduler");
         primaryStage.setScene(scene);
+        URL cssUrl = getClass().getResource("/com/example/joana/styles/table.css");
+        URL cssUrlGeneral = getClass().getResource("/com/example/joana/styles/general.css");
+        if (cssUrl != null && cssUrlGeneral != null) {
+            scene.getStylesheets().add(cssUrl.toExternalForm());
+            scene.getStylesheets().add(cssUrlGeneral.toExternalForm());
+        } else {
+            System.err.println("CSS file not found: /com/example/joana/ui/styles/table.css");
+            // Optional: You can create a default stylesheet or continue without it
+        }
         primaryStage.show();
     }
 

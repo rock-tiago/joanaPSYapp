@@ -1,38 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<VBox prefHeight="536.0" prefWidth="827.0" spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.joana.ui.controllers.MainController">
+<VBox prefHeight="625.0" prefWidth="827.0" spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.joana.ui.controllers.MainController">
    <children>
-      <HBox prefHeight="373.0" prefWidth="667.0">
+       <VBox fx:id="calendarSection" VBox.vgrow="NEVER">
+          <children>
+              <ScrollPane fx:id="appointmentsContainer" fitToWidth="true" hbarPolicy="ALWAYS" vbarPolicy="NEVER">
+                  <content>
+                      <HBox fx:id="calendarContainer" spacing="10">
+                          <padding>
+                              <Insets bottom="10" left="10" right="10" top="10" />
+                          </padding>
+                      </HBox>
+                  </content>
+              </ScrollPane>
+          </children>
+       </VBox>
+      <SplitPane dividerPositions="0.5430303030303031" prefHeight="413.0" prefWidth="827.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                   <TableView fx:id="patientTable" prefHeight="411.0" prefWidth="446.0">
+                       <columns>
+                           <TableColumn fx:id="nameCol" prefWidth="150" text="Name" />
+                           <TableColumn fx:id="phoneCol" prefWidth="150" text="Phone" />
+                           <TableColumn fx:id="emailCol" prefWidth="150" text="Email" />
+                       </columns>
+                   </TableView>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+        </items>
+      </SplitPane>
+      <VBox prefHeight="97.0" prefWidth="827.0">
          <children>
-            <ListView fx:id="appointmentList" prefHeight="373.0" prefWidth="377.0" />
-             <TableView fx:id="patientTable" prefHeight="373.0" prefWidth="449.0">
-                 <columns>
-                     <TableColumn fx:id="nameCol" prefWidth="150" text="Name" />
-                     <TableColumn fx:id="phoneCol" prefWidth="150" text="Phone" />
-                     <TableColumn fx:id="emailCol" prefWidth="150" text="Email" />
-                 </columns>
-             </TableView>
-         </children>
-      </HBox>
-      <Pane prefHeight="154.0" prefWidth="667.0">
-         <children>
-             <HBox alignment="CENTER" layoutY="62.0" prefHeight="0.0" prefWidth="667.0" spacing="10">
+             <HBox alignment="CENTER" prefHeight="98.0" prefWidth="827.0" spacing="10">
                 <children>
                     <Button onAction="#onUpdatePatient" text="Update Patient" />
                     <Button onAction="#onDeletePatient" text="Delete Patient" />
                 </children>
              </HBox>
-             <HBox alignment="CENTER" layoutX="-9.0" layoutY="109.0" prefHeight="31.0" prefWidth="680.0" spacing="10">
+             <HBox alignment="CENTER" prefHeight="31.0" prefWidth="273.0" spacing="10">
                 <children>
                     <Button fx:id="scheduleAppointment" onAction="#onScheduleAppointment" prefHeight="31.0" prefWidth="187.0" text="Schedule Appointment" />
                     <Button fx:id="addPatient" onAction="#onAddPatient" text="Add Patient" />
                 </children>
              </HBox>
          </children>
-      </Pane>
+      </VBox>
    </children>
 </VBox>

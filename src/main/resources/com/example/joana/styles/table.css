@@ -1,0 +1,18 @@
+.button {
+    -fx-background-radius: 6;
+    -fx-padding: 6 12;
+}
+
+.button:hover {
+    -fx-background-color: #eaeaea;
+}
+
+.button:focused {
+    -fx-border-color: #4a90e2;
+    -fx-border-radius: 6;
+}
+
+#patientTable {
+    -fx-padding-left: 50;
+    -fx-padding-right: 50;
+}

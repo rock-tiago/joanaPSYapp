@@ -1,0 +1,35 @@
+/* Add spacing between calendar and table */
+.calendar-section {
+    -fx-padding: 0 0 20 0; /* right, bottom, left, top */
+    -fx-background-color: transparent;
+}
+
+.table-section {
+    -fx-padding: 10 0 0 0; /* top padding */
+}
+
+/* Hide horizontal scroll bar */
+/*
+.scroll-pane .scroll-bar:horizontal {
+    -fx-opacity: 0;
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar:horizontal .thumb {
+    -fx-opacity: 0;
+}
+*/
+/* Make scroll bar thinner and lighter */
+.scroll-pane .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+    -fx-pref-height: 6px;
+}
+
+.scroll-pane .scroll-bar:horizontal .thumb {
+    -fx-background-color: #cccccc;
+    -fx-background-radius: 3px;
+}
+
+.scroll-pane .scroll-bar:horizontal .thumb:hover {
+    -fx-background-color: #aaaaaa;
+}

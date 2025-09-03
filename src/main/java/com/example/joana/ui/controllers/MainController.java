@@ -7,25 +7,35 @@ import com.example.joana.model.Patient;
 import com.example.joana.ui.list.AppointmentItem;
 import com.example.joana.ui.list.CalendarItem;
 import com.example.joana.ui.list.DayHeader;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 public class MainController {
 
+    @FXML public ScrollPane appointmentsContainer;
+    @FXML private VBox calendarSection;
     @FXML private TableView<Patient> patientTable;
     @FXML private TableColumn<Patient, String> nameCol;
     @FXML private TableColumn<Patient, String> phoneCol;
     @FXML private TableColumn<Patient, String> emailCol;
-    @FXML private ListView<CalendarItem> appointmentList;
+    @FXML private HBox calendarContainer;
     @FXML private Button addPatient;
     @FXML private Button scheduleAppointment;
 
@@ -37,48 +47,14 @@ public class MainController {
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
         emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
 
-        appointmentList.setCellFactory(list -> new ListCell<>() {
-            @Override
-            protected void updateItem(CalendarItem item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (empty || item == null) {
-                    setText(null);
-                    setGraphic(null);
-                    return;
-                }
-
-                if (item instanceof DayHeader header) {
-                    LocalDate date = header.getDate();
-                    setText(date.format(DateTimeFormatter.ofPattern("d MMM, EEEE")));
-                    setStyle("-fx-font-weight: bold; -fx-background-color: #e0e0e0; -fx-padding: 5;");
-                }
-                else if (item instanceof AppointmentItem apptItem) {
-                    Appointment appt = apptItem.getAppointment();
-
-                    String timeStr = "??:??";
-                    if (appt.getTime() != null) {
-                        timeStr = appt.getTime().format(DateTimeFormatter.ofPattern("HH:mm"));
-                    }
-
-                    String patientName = "Unknown";
-                    try {
-                        patientName = resolvePatientName(appt.getPatientId());
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-
-                    setText("   " + timeStr + " - " + patientName);
-                    setStyle("-fx-padding: 3;");
-                }
-            }
-        });
-//        try {
-//            refreshPatients();
-//            refreshAppointments();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
+        if (calendarContainer != null) {
+            calendarContainer.getChildren().clear();
+            calendarContainer.setSpacing(10);
+            calendarContainer.setStyle("-fx-padding: 10;");
+        }
+        VBox.setVgrow(patientTable, Priority.ALWAYS);
+        VBox.setVgrow(appointmentsContainer, Priority.ALWAYS);
+        patientTable.setMinHeight(0);
     }
 
     private String resolvePatientName(int patientId) throws SQLException {
@@ -97,20 +73,92 @@ public class MainController {
     }
 
     private void refreshAppointments() throws SQLException {
-        appointmentList.getItems().clear();
+        calendarContainer.getChildren().clear();
         LocalDate today = LocalDate.now();
+        List<VBox> dayBoxes = new ArrayList<>();
 
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 11; i++) {
             LocalDate date = today.plusDays(i);
-            appointmentList.getItems().add(new DayHeader(date));
 
-            var appointments = appointmentDAO.getAppointmentsForDay(date);
-            appointments.sort(Comparator.comparing(Appointment::getTime));
+            VBox dayBox = new VBox(10);
+            dayBox.setMinWidth(160); // optional: give each column a consistent width
+            dayBox.setStyle("""
+            -fx-background-color: #f9f9fb;
+            -fx-border-color: #e3e3e8;
+            -fx-border-radius: 8;
+            -fx-background-radius: 8;
+            -fx-padding: 8;
+        """);
 
-            for (var appt : appointments) {
-                appointmentList.getItems().add(new AppointmentItem(appt));
+            Label header = new Label(date.format(DateTimeFormatter.ofPattern("EEE, d MMM")));
+            header.setStyle("-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #333;");
+
+            dayBox.getChildren().add(header);
+
+            var appts = appointmentDAO.getAppointmentsForDay(date);
+            appts.sort(Comparator.comparing(Appointment::getTime));
+
+            if (appts.isEmpty()) {
+                Label noAppts = new Label("No appointments");
+                noAppts.setStyle("-fx-text-fill: #999;");
+                dayBox.getChildren().add(noAppts);
+            } else {
+                for (var appt : appts) {
+                    String timeStr = (appt.getTime() != null)
+                            ? appt.getTime().format(DateTimeFormatter.ofPattern("HH:mm"))
+                            : "--:--";
+                    String patientName;
+                    try {
+                        patientName = resolvePatientName(appt.getPatientId());
+                    } catch (SQLException e) {
+                        patientName = "Unknown";
+                    }
+                    Label pill = new Label(timeStr + "  –  " + patientName);
+                    pill.setWrapText(true);
+                    pill.setStyle("""
+                    -fx-background-color: white;
+                    -fx-border-color: #e3e3e8;
+                    -fx-background-radius: 6;
+                    -fx-border-radius: 6;
+                    -fx-padding: 6;
+                """);
+                    dayBox.getChildren().add(pill);
+                }
             }
+            dayBoxes.add(dayBox);
+            calendarContainer.getChildren().add(dayBox);
         }
+
+        Platform.runLater(() -> {
+            calendarContainer.applyCss();
+            calendarContainer.layout();
+
+            // Measure the actual height of each day column after layout
+            double maxDayHeight = dayBoxes.stream()
+                    .mapToDouble(box -> box.getLayoutBounds().getHeight())
+                    .max()
+                    .orElse(200); // fallback if no appointments
+
+            double targetHeight = maxDayHeight + 20; // add a little padding under
+
+            // Fix all day columns to that height
+            for (VBox box : dayBoxes) {
+                box.setMinHeight(targetHeight);
+                box.setPrefHeight(targetHeight);
+            }
+
+            calendarContainer.setMinHeight(targetHeight);
+            calendarContainer.setPrefHeight(targetHeight);
+            calendarContainer.setMaxHeight(targetHeight);
+
+            // This is KEY: set the outer container to fixed height
+            calendarSection.setMinHeight(targetHeight + 20); // ScrollPane padding
+            calendarSection.setPrefHeight(targetHeight + 20);
+            calendarSection.setMaxHeight(targetHeight + 20);
+
+            appointmentsContainer.setFitToHeight(false);
+        });
+
     }
 
     private void loadPatients() {
