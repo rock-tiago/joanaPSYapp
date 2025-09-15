@@ -25,9 +25,30 @@ public class ScheduleAppointmentController {
     private PatientDAO patientDAO;
     private AppointmentDAO appointmentDAO;
 
+    private void setupPatientComboBox() {
+        // Display names instead of Patient.toString()
+        patientComboBox.setCellFactory(listView -> new ListCell<>() {
+            @Override
+            protected void updateItem(Patient patient, boolean empty) {
+                super.updateItem(patient, empty);
+                setText(empty || patient == null ? null : patient.getName());
+            }
+        });
+
+        // Also fix the "selected item" display
+        patientComboBox.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(Patient patient, boolean empty) {
+                super.updateItem(patient, empty);
+                setText(empty || patient == null ? null : patient.getName());
+            }
+        });
+    }
+
     public void setDAOs(PatientDAO patientDAO, AppointmentDAO appointmentDAO) {
         this.patientDAO = patientDAO;
         this.appointmentDAO = appointmentDAO;
+        setupPatientComboBox();
         loadPatients();
     }
 

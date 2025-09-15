@@ -55,6 +55,7 @@ public class MainController {
         VBox.setVgrow(patientTable, Priority.ALWAYS);
         VBox.setVgrow(appointmentsContainer, Priority.ALWAYS);
         patientTable.setMinHeight(0);
+        patientTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
     }
 
     private String resolvePatientName(int patientId) throws SQLException {

@@ -61,4 +61,8 @@ public class Patient {
     public void setNotes(String notes) {
         this.notes = notes;
     }
+
+    public String toString(Patient p) {
+        return name;
+    }
 }

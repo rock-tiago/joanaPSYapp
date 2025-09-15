@@ -21,19 +21,15 @@
               </ScrollPane>
           </children>
        </VBox>
-      <SplitPane dividerPositions="0.5430303030303031" prefHeight="413.0" prefWidth="827.0">
+      <SplitPane dividerPositions="0.5" prefHeight="413.0" prefWidth="827.0">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-               <children>
-                   <TableView fx:id="patientTable" prefHeight="411.0" prefWidth="446.0">
-                       <columns>
-                           <TableColumn fx:id="nameCol" prefWidth="150" text="Name" />
-                           <TableColumn fx:id="phoneCol" prefWidth="150" text="Phone" />
-                           <TableColumn fx:id="emailCol" prefWidth="150" text="Email" />
-                       </columns>
-                   </TableView>
-               </children>
-            </AnchorPane>
+           <TableView fx:id="patientTable" prefHeight="411.0" prefWidth="446.0">
+               <columns>
+                   <TableColumn fx:id="nameCol" prefWidth="150" text="Name" />
+                   <TableColumn fx:id="phoneCol" prefWidth="150" text="Phone" />
+                   <TableColumn fx:id="emailCol" prefWidth="150" text="Email" />
+               </columns>
+           </TableView>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
         </items>
       </SplitPane>
