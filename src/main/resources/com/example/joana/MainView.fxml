@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
@@ -30,19 +31,24 @@
                    <TableColumn fx:id="emailCol" prefWidth="150" text="Email" />
                </columns>
            </TableView>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+            <VBox prefHeight="409.0" prefWidth="375.0">
+               <children>
+                  <ScrollPane fitToWidth="true" fitToHeight="true">
+                     <content>
+                        <TextArea fx:id="notesFlow" prefHeight="200.0" prefWidth="200.0">
+                            No patient selected.
+                        </TextArea>
+                     </content>
+                  </ScrollPane>
+               </children></VBox>
         </items>
       </SplitPane>
       <VBox prefHeight="97.0" prefWidth="827.0">
          <children>
-             <HBox alignment="CENTER" prefHeight="98.0" prefWidth="827.0" spacing="10">
+             <HBox fx:id="bottomButtons" alignment="CENTER" prefHeight="98.0" prefWidth="827.0" spacing="10">
                 <children>
-                    <Button onAction="#onUpdatePatient" text="Update Patient" />
-                    <Button onAction="#onDeletePatient" text="Delete Patient" />
-                </children>
-             </HBox>
-             <HBox alignment="CENTER" prefHeight="31.0" prefWidth="273.0" spacing="10">
-                <children>
+                    <Button fx:id="updatePatient" onAction="#onUpdatePatient" text="Update Patient" />
+                    <Button fx:id="deletePatient" onAction="#onDeletePatient" text="Delete Patient" />
                     <Button fx:id="scheduleAppointment" onAction="#onScheduleAppointment" prefHeight="31.0" prefWidth="187.0" text="Schedule Appointment" />
                     <Button fx:id="addPatient" onAction="#onAddPatient" text="Add Patient" />
                 </children>

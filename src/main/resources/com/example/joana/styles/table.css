@@ -15,4 +15,26 @@
 #patientTable {
     -fx-padding-left: 50;
     -fx-padding-right: 50;
+    -fx-background-color: transparent;
+    -fx-border-color: #e3e3e8;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 4;
+    -fx-table-cell-border-color: transparent;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #f0f0f5;
+    -fx-border-color: transparent;
+    -fx-background-radius: 8 8 0 0;
+}
+
+.table-view .column-header,
+.table-view .column-header .label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+#bottomButtons {
+    -fx-padding: 10;
 }

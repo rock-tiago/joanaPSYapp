@@ -18,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
@@ -30,14 +31,19 @@ import java.util.List;
 public class MainController {
 
     @FXML public ScrollPane appointmentsContainer;
+    @FXML public HBox bottomButtons;
+    @FXML public TextArea notesFlow;
     @FXML private VBox calendarSection;
     @FXML private TableView<Patient> patientTable;
     @FXML private TableColumn<Patient, String> nameCol;
     @FXML private TableColumn<Patient, String> phoneCol;
     @FXML private TableColumn<Patient, String> emailCol;
     @FXML private HBox calendarContainer;
+    @FXML private VBox container;
     @FXML private Button addPatient;
     @FXML private Button scheduleAppointment;
+    @FXML private Button deletePatient;
+    @FXML private Button updatePatient;
 
     private PatientDAO patientDAO;
     private AppointmentDAO appointmentDAO;
@@ -56,6 +62,17 @@ public class MainController {
         VBox.setVgrow(appointmentsContainer, Priority.ALWAYS);
         patientTable.setMinHeight(0);
         patientTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+
+        patientTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                String notes = newValue.getNotes();
+                if (notes != null) {
+                    notesFlow.setText(notes);
+                } else {
+                    notesFlow.setText("No notes for this patient.");
+                }
+            }
+        });
     }
 
     private String resolvePatientName(int patientId) throws SQLException {
@@ -198,7 +215,7 @@ public class MainController {
     }
 
     @FXML
-    private void onUpdatePatient() { //TODO fix this - creates new instead of updating || does not add to DB
+    private void onUpdatePatient() {
         Patient selected = patientTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
             new Alert(Alert.AlertType.WARNING, "Select a patient to update").show();
@@ -212,8 +229,8 @@ public class MainController {
             stage.setTitle("Update Patient");
 
             PatientController controller = loader.getController();
+            controller.setPatient(selected);
             controller.setDAOs(patientDAO);
-            controller.setPatient(selected); // preload fields
 
             stage.showAndWait();
 

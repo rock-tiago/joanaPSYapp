@@ -30,7 +30,7 @@ public class PatientController {
     private PatientDAO patientDAO;
     private ObservableList<Patient> patientList;
 
-    private Patient existingPatient; // For updates
+    private Patient currentPatient;
     private Patient resultPatient;
 
     public Patient getResultPatient() {
@@ -71,12 +71,14 @@ public class PatientController {
 
 
     public void setPatient(Patient patient) {
-        this.existingPatient = patient;
-        // Pre-fill form for editing
-        nameField.setText(patient.getName());
-        phoneField.setText(patient.getPhone());
-        emailField.setText(patient.getEmail());
-        notesArea.setText(patient.getNotes());
+        this.currentPatient = patient;
+
+        if (patient != null) {
+            nameField.setText(patient.getName());
+            phoneField.setText(patient.getPhone());
+            emailField.setText(patient.getEmail());
+            notesArea.setText(patient.getNotes());
+        }
     }
 
     @FXML
@@ -88,17 +90,15 @@ public class PatientController {
                 return;
             }
 
-            Patient selectedPatient = patientTable.getSelectionModel().getSelectedItem();
-
-            if (selectedPatient != null) {
+            if (currentPatient != null) {
                 // Update existing patient
-                selectedPatient .setName(name);
-                selectedPatient .setPhone(phoneField.getText().trim());
-                selectedPatient .setEmail(emailField.getText().trim());
-                selectedPatient .setNotes(notesArea.getText().trim());
+                currentPatient .setName(name);
+                currentPatient .setPhone(phoneField.getText().trim());
+                currentPatient .setEmail(emailField.getText().trim());
+                currentPatient .setNotes(notesArea.getText().trim());
 
-                patientDAO.updatePatient(selectedPatient);
-                resultPatient = selectedPatient;
+                patientDAO.updatePatient(currentPatient);
+                resultPatient = currentPatient;
 
                 patientTable.refresh();
             } else {
