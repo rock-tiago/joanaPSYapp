@@ -7,7 +7,55 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox prefHeight="625.0" prefWidth="827.0" spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.joana.ui.controllers.MainController">
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<BorderPane xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.joana.ui.controllers.MainController">
+    <left>
+        <VBox fx:id="sidebar" spacing="10"
+              style="-fx-background-color: #2c3e50; -fx-fit-to-width: true">
+            <children>
+                <HBox fx:id="sidebarBtns" spacing="10" alignment="CENTER_LEFT" style="-fx-cursor: hand;">
+                    <ImageView fitWidth="20" fitHeight="20"
+                               preserveRatio="true"
+                               smooth="true"
+                               pickOnBounds="true">
+                        <image>
+                            <Image url="@icons/home.png" />
+                        </image>
+                    </ImageView>
+                    <Label text="Dashboard" style="-fx-text-fill: white; -fx-font-size: 14px;" />
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-cursor: hand;">
+                    <ImageView fitWidth="20" fitHeight="20">
+                        <image>
+                            <Image url="@icons/users.png" />
+                        </image>
+                    </ImageView>
+                    <Label text="Patients" style="-fx-text-fill: white; -fx-font-size: 14px;" />
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-cursor: hand;">
+                    <ImageView fitWidth="20" fitHeight="20">
+                        <image>
+                            <Image url="@icons/calendar.png" />
+                        </image>
+                    </ImageView>
+                    <Label text="Appointments" style="-fx-text-fill: white; -fx-font-size: 14px;" />
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-cursor: hand;">
+                    <ImageView fitWidth="20" fitHeight="20">
+                        <image>
+                            <Image url="@icons/settings.png" />
+                        </image>
+                    </ImageView>
+                    <Label text="Settings" style="-fx-text-fill: white; -fx-font-size: 14px;" />
+                </HBox>
+            </children>
+        </VBox>
+    </left>
+    <center>
+    <VBox prefHeight="625.0" prefWidth="827.0" spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
        <VBox fx:id="calendarSection" VBox.vgrow="NEVER">
           <children>
@@ -57,3 +105,5 @@
       </VBox>
    </children>
 </VBox>
+    </center>
+</BorderPane>

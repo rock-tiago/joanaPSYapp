@@ -33,6 +33,7 @@ public class MainController {
     @FXML public ScrollPane appointmentsContainer;
     @FXML public HBox bottomButtons;
     @FXML public TextArea notesFlow;
+    @FXML public VBox sidebar;
     @FXML private VBox calendarSection;
     @FXML private TableView<Patient> patientTable;
     @FXML private TableColumn<Patient, String> nameCol;

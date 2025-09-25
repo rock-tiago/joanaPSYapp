@@ -65,3 +65,11 @@
     -fx-background-color: #357abd;
 }
 
+#sidebar HBox:hover {
+    -fx-background-color: #34495e;
+    -fx-background-radius: 6;
+}
+
+#sidebar HBox {
+    -fx-padding: 10;
+}
