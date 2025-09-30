@@ -61,55 +61,6 @@
         </VBox>
     </left>
     <center>
-    <VBox prefHeight="625.0" prefWidth="827.0" spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-       <VBox fx:id="calendarSection" VBox.vgrow="NEVER">
-          <children>
-              <ScrollPane fx:id="appointmentsContainer" fitToWidth="true" hbarPolicy="ALWAYS" vbarPolicy="NEVER">
-                  <content>
-                      <HBox fx:id="calendarContainer" spacing="10">
-                          <padding>
-                              <Insets bottom="10" left="10" right="10" top="10" />
-                          </padding>
-                      </HBox>
-                  </content>
-              </ScrollPane>
-          </children>
-       </VBox>
-      <SplitPane dividerPositions="0.5" prefHeight="413.0" prefWidth="827.0">
-        <items>
-           <TableView fx:id="patientTable" prefHeight="411.0" prefWidth="446.0">
-               <columns>
-                   <TableColumn fx:id="nameCol" prefWidth="150" text="Name" />
-                   <TableColumn fx:id="phoneCol" prefWidth="150" text="Phone" />
-                   <TableColumn fx:id="emailCol" prefWidth="150" text="Email" />
-               </columns>
-           </TableView>
-            <VBox prefHeight="409.0" prefWidth="375.0">
-               <children>
-                  <ScrollPane fitToWidth="true" fitToHeight="true">
-                     <content>
-                        <TextArea fx:id="notesFlow" prefHeight="200.0" prefWidth="200.0">
-                            No patient selected.
-                        </TextArea>
-                     </content>
-                  </ScrollPane>
-               </children></VBox>
-        </items>
-      </SplitPane>
-      <VBox prefHeight="97.0" prefWidth="827.0">
-         <children>
-             <HBox fx:id="bottomButtons" alignment="CENTER" prefHeight="98.0" prefWidth="827.0" spacing="10">
-                <children>
-                    <Button fx:id="updatePatient" onAction="#onUpdatePatient" text="Update Patient" />
-                    <Button fx:id="deletePatient" onAction="#onDeletePatient" text="Delete Patient" />
-                    <Button fx:id="scheduleAppointment" onAction="#onScheduleAppointment" prefHeight="31.0" prefWidth="187.0" text="Schedule Appointment" />
-                    <Button fx:id="addPatient" onAction="#onAddPatient" text="Add Patient" />
-                </children>
-             </HBox>
-         </children>
-      </VBox>
-   </children>
-</VBox>
+        <StackPane fx:id="contentArea" />
     </center>
 </BorderPane>

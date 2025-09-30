@@ -9,6 +9,8 @@ module com.example.joana {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires java.sql;
+    requires javafx.graphics;
+    //requires com.example.joana;
 
     opens com.example.joana.ui.controllers   to javafx.fxml;
     opens com.example.joana.model to javafx.base;

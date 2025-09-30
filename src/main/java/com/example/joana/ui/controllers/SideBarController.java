@@ -1,6 +1,6 @@
 package com.example.joana.ui.controllers;
 
-public class CalendarController {
+public class SideBarController {
 
     public void initialize() {
 
