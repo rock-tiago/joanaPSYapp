@@ -4,36 +4,73 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox spacing="10" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.joana.ui.controllers.ScheduleAppointmentController">
+<!--<VBox spacing="10" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.joana.ui.controllers.ScheduleAppointmentController">-->
+<!--    <padding>-->
+<!--        <Insets top="10" right="10" bottom="10" left="10"/>-->
+<!--    </padding>-->
+
+<!--    &lt;!&ndash; Patient Selection &ndash;&gt;-->
+<!--    <HBox spacing="10">-->
+<!--        <Label text="Patient:"/>-->
+<!--        <ComboBox fx:id="patientComboBox" promptText="Select patient"/>-->
+<!--        <Button text="Add New Patient" onAction="#onAddNewPatient"/>-->
+<!--    </HBox>-->
+
+<!--    &lt;!&ndash; Date & Time &ndash;&gt;-->
+<!--    <HBox spacing="10">-->
+<!--        <Label text="Date:"/>-->
+<!--        <DatePicker fx:id="datePicker"/>-->
+<!--        <Label text="Time:"/>-->
+<!--        <TextField fx:id="timeField" promptText="HH:MM"/>-->
+<!--    </HBox>-->
+
+<!--    &lt;!&ndash; Notes &ndash;&gt;-->
+<!--    <VBox spacing="5">-->
+<!--        <Label text="Notes:"/>-->
+<!--        <TextArea fx:id="notesArea" prefRowCount="5"/>-->
+<!--    </VBox>-->
+
+<!--    &lt;!&ndash; Buttons &ndash;&gt;-->
+<!--    <HBox spacing="10">-->
+<!--        <Button fx:id="saveAppointment" text="Save Appointment" onAction="#onSaveAppointment"/>-->
+<!--        <Button fx:id="cancel" text="Cancel" onAction="#onCancel"/>-->
+<!--    </HBox>-->
+<!--</VBox>-->
+<VBox spacing="10" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.joana.ui.controllers.ScheduleAppointmentController" style="-fx-background-color: #ffffff;">
     <padding>
-        <Insets top="10" right="10" bottom="10" left="10"/>
+        <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
-
-    <!-- Patient Selection -->
-    <HBox spacing="10">
-        <Label text="Patient:"/>
-        <ComboBox fx:id="patientComboBox" promptText="Select patient"/>
-        <Button text="Add New Patient" onAction="#onAddNewPatient"/>
+    <!-- Patient Section -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Patient:" style="-fx-font-weight: bold;" />
+        <ComboBox fx:id="patientComboBox" promptText="Select patient" />
+        <Button text="+" fx:id="onAddNewPatient" style="-fx-background-radius: 50;" />
     </HBox>
 
-    <!-- Date & Time -->
-    <HBox spacing="10">
-        <Label text="Date:"/>
-        <DatePicker fx:id="datePicker"/>
-        <Label text="Time:"/>
-        <TextField fx:id="timeField" promptText="HH:MM"/>
+    <!-- Date & Time Section -->
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <Label text="Date:" style="-fx-font-weight: bold;" />
+        <DatePicker fx:id="datePicker" />
+
+        <Label text="Time:" style="-fx-font-weight: bold;" />
+        <ComboBox fx:id="timePicker" promptText="Select time" />
+        <!-- Could also be a Spinner<Integer> for hours + minutes -->
     </HBox>
 
-    <!-- Notes -->
-    <VBox spacing="5">
-        <Label text="Notes:"/>
-        <TextArea fx:id="notesArea" prefRowCount="5"/>
+    <!-- Notes Section -->
+    <VBox>
+        <Label text="Notes:" style="-fx-font-weight: bold;" />
+        <TextArea fx:id="notesArea" promptText="Add details for this appointment..."
+                  prefRowCount="4" wrapText="true"
+                  style="-fx-background-radius: 8; -fx-border-color: #ddd;" />
     </VBox>
 
-    <!-- Buttons -->
-    <HBox spacing="10">
-        <Button fx:id="saveAppointment" text="Save Appointment" onAction="#onSaveAppointment"/>
-        <Button fx:id="cancel" text="Cancel" onAction="#onCancel"/>
+    <!-- Buttons Section -->
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Cancel" fx:id="cancel" onAction="#onCancel"
+                style="-fx-background-color: #c44b4b; -fx-text-fill: white;" />
+        <Button text="Save Appointment" fx:id="saveAppointment" onAction="#onSaveAppointment"
+                style="-fx-background-color: #4a90e2; -fx-text-fill: white; -fx-background-radius: 6;" />
     </HBox>
 </VBox>
 

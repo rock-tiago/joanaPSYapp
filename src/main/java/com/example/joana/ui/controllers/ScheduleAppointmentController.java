@@ -17,10 +17,13 @@ import java.util.List;
 
 public class ScheduleAppointmentController {
 
+    @FXML public ComboBox timePicker;
     @FXML private ComboBox<Patient> patientComboBox;
     @FXML private DatePicker datePicker;
     @FXML private TextField timeField;
     @FXML private TextArea notesArea;
+    @FXML private Button saveAppointment;
+    @FXML private Button cancel;
 
     private PatientDAO patientDAO;
     private AppointmentDAO appointmentDAO;

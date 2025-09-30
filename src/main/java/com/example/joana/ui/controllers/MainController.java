@@ -292,4 +292,68 @@ public class MainController {
         Alert alert = new Alert(Alert.AlertType.WARNING, message);
         alert.showAndWait();
     }
+
+    @FXML public void onHomeClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/joana/MainMenu.fxml"));
+            Stage stage = new Stage();
+            stage.setScene(new Scene(loader.load()));
+            stage.setTitle("Main Menu");
+
+            MainController controller = loader.getController();
+            controller.setDAOs(patientDAO, appointmentDAO);
+            stage.setOnHidden(e -> refreshAllData());
+            stage.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML public void onCalendarClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/joana/CalendarView.fxml"));
+            Stage stage = new Stage();
+            stage.setScene(new Scene(loader.load()));
+            stage.setTitle("Calendar View");
+
+            CalendarController controller = loader.getController();
+            controller.initialize();
+
+            stage.setOnHidden(e -> refreshAllData());
+            stage.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML public void onPatientsClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/joana/PatientsView.fxml"));
+            Stage stage = new Stage();
+            stage.setScene(new Scene(loader.load()));
+            stage.setTitle("Patients View");
+
+            PatientController controller = loader.getController();
+
+            stage.setOnHidden(e -> refreshAllData());
+            stage.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML public void onSettingsClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/joana/SettingsView.fxml"));
+            Stage stage = new Stage();
+            stage.setScene(new Scene(loader.load()));
+            stage.setTitle("Settings");
+
+            MainController controller = loader.getController();
+
+            stage.showAndWait();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
