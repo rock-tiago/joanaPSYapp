@@ -45,15 +45,15 @@ public class CalendarController {
         // Show week page by default
         calendarView.showWeekPage();
 
-        // Listen to date changes
-        calendarView.dateProperty().addListener((obs, oldDate, newDate) -> {
-            System.out.println("Date changed to: " + newDate);
-        });
-
-        // Listen to page changes (Day/Week/Month)
-        calendarView.selectedPageProperty().addListener((obs, oldPage, newPage) -> {
-            System.out.println("Now showing: " + newPage.getClass().getSimpleName());
-        });
+//        // Listen to date changes
+//        calendarView.dateProperty().addListener((obs, oldDate, newDate) -> {
+//            System.out.println("Date changed to: " + newDate);
+//        });
+//
+//        // Listen to page changes (Day/Week/Month)
+//        calendarView.selectedPageProperty().addListener((obs, oldPage, newPage) -> {
+//            System.out.println("Now showing: " + newPage.getClass().getSimpleName());
+//        });
 
     }
 
@@ -75,7 +75,7 @@ public class CalendarController {
 
         for (Appointment a : all) {
             String title = (a.getPatient() != null) ? a.getPatient().getName() : "Appointment";
-            Entry<Appointment> entry = new Entry<>(a.getPatient().getName()); // title
+            Entry<Appointment> entry = new Entry<>(title);
             entry.setUserObject(a); // store the appointment object inside the Entry
 
             // set interval (there are convenience methods)
@@ -83,6 +83,7 @@ public class CalendarController {
             LocalDate date = a.getDate(); // adjust to your model types
             LocalTime time = a.getTime();
             if (date == null || time == null) continue;
+
             // default duration: 1 hour (or use a.getDuration() if you have it)
             entry.setInterval(date, time, date, time.plusHours(1));
 
@@ -106,31 +107,25 @@ public class CalendarController {
     public void setDAO(AppointmentDAO dao) throws SQLException {
         this.appointmentDAO = dao;
         loadAppointmentsIntoCalendar();
-        loadDayView(); // default
+        //loadDayView(); // default
     }
 
     @FXML
-    private void switchToDay() {
-        try {
-            loadDayView();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    private void switchToDay() { calendarView.showDayPage(); }
 
     @FXML
     private void switchToWeek() {
-        loadWeekView();
+        calendarView.showWeekPage();
     }
 
     @FXML
     private void switchToMonth() {
-        loadMonthView();
+        calendarView.showMonthPage();
     }
 
     @FXML
     private void goToday() {
-        // TODO: Reset the view to current date
+        calendarView.setDate(LocalDate.now());
     }
 
     @FXML
