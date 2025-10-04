@@ -1,6 +1,8 @@
 package com.example.joana.model;
 
+import com.example.joana.dao.AppointmentDAO;
 import com.example.joana.dao.PatientDAO;
+import com.example.joana.ui.controllers.PatientController;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -57,5 +59,12 @@ public class Appointment {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public Patient getPatient() {
+        PatientDAO patientDAO = new PatientDAO();
+        Appointment appointment = AppointmentDAO.getAppointmentById(getId());
+
+        return appointment.getPatient();
     }
 }

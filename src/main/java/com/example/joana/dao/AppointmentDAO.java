@@ -6,14 +6,69 @@ import com.example.joana.model.Appointment;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AppointmentDAO {
-    private Connection conn;
+    private static Connection conn;
 
     public AppointmentDAO(Connection conn) {
         this.conn = conn;
+    }
+
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+    public static Appointment getAppointmentById(int id) {
+        String sql = "SELECT * FROM appointments WHERE id = ?";
+        Appointment appointment = null;
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                appointment = new Appointment(
+                        rs.getInt("id"),
+                        rs.getInt("patient_id"),
+                        rs.getDate("date").toLocalDate(),
+                        rs.getTime("time").toLocalTime(),
+                        rs.getString("notes")
+                );
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return appointment;
+    }
+
+    public List<Appointment> getAllAppointments() {
+        String sql = "SELECT * FROM appointments";
+        List<Appointment> appointments = new ArrayList<>();
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Appointment appointment = new Appointment();
+                appointment.setId(rs.getInt("id"));
+                appointment.setPatientId(rs.getInt("patient_id"));
+
+                String dateStr =  rs.getString("date");
+                String timeStr =  rs.getString("time");
+
+                if(dateStr != null && timeStr != null) {
+                    appointment.setDate(LocalDate.parse(dateStr, dateFormatter));
+                    appointment.setTime(LocalTime.parse(timeStr, timeFormatter));
+                }
+
+                appointments.add(appointment);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return appointments;
     }
 
     public void createTable() throws SQLException {
@@ -85,6 +140,31 @@ public class AppointmentDAO {
             }
         }
 
+        return list;
+    }
+
+    public List<Appointment> getAppointmentsForDate(LocalDate date) throws SQLException {
+        String sql = "SELECT * FROM appointments WHERE date = ? ORDER BY time ASC";
+        List<Appointment> list = new ArrayList<>();
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, date.toString());
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    int patientId = rs.getInt("patient_id");
+                    String dateStr = rs.getString("date");
+                    String timeStr = rs.getString("time");
+                    LocalDate localDate = dateStr != null ? LocalDate.parse(dateStr) : null;
+                    LocalTime localTime = timeStr != null ? LocalTime.parse(timeStr) : null;
+                    String notes = null;
+                    try { notes = rs.getString("notes"); } catch (SQLException ignored) {}
+
+                    Appointment appt = new Appointment(id, patientId, localDate, localTime, notes);
+                    list.add(appt);
+                }
+            }
+        }
         return list;
     }
 }

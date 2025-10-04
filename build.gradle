@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'application'
     id 'org.javamodularity.moduleplugin' version '1.8.12'
-    id 'org.openjfx.javafxplugin' version '0.0.13'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
     id 'org.beryx.jlink' version '2.25.0'
 }
 
@@ -21,8 +21,11 @@ ext {
     junitVersion = '5.10.0'
 }
 
-sourceCompatibility = '17'
-targetCompatibility = '17'
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
@@ -30,11 +33,11 @@ tasks.withType(JavaCompile) {
 
 application {
     mainModule = 'com.example.joana'
-    mainClass = 'com.example.joana.HelloApplication'
+    mainClass = 'com.example.joana.MainApp'
 }
 
 javafx {
-    version = '17.0.6'
+    version = '21.0.2'
     modules = ['javafx.controls', 'javafx.fxml', 'javafx.web', 'javafx.swing']
 }
 
@@ -52,9 +55,8 @@ dependencies {
     // SQLite JDBC
     implementation('org.xerial:sqlite-jdbc:3.43.0.0')
 
-    // JavaFX
-    implementation ('org.openjfx:javafx-controls:20')
-    implementation ('org.openjfx:javafx-fxml:20')
+    // CalendarFX
+    implementation('com.calendarfx:view:11.12.7')
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")

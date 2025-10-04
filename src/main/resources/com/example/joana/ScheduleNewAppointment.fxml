@@ -51,10 +51,8 @@
     <HBox spacing="15" alignment="CENTER_LEFT">
         <Label text="Date:" style="-fx-font-weight: bold;" />
         <DatePicker fx:id="datePicker" />
-
         <Label text="Time:" style="-fx-font-weight: bold;" />
-        <ComboBox fx:id="timePicker" promptText="Select time" />
-        <!-- Could also be a Spinner<Integer> for hours + minutes -->
+        <TextField fx:id="timeField" promptText="HH:MM" />
     </HBox>
 
     <!-- Notes Section -->

@@ -32,7 +32,6 @@ public class MainMenuController {
     @FXML private TableColumn<Patient, String> emailCol;
     @FXML private TextArea notesFlow;
     @FXML private HBox bottomButtons;
-    @FXML private Button addPatient, updatePatient, deletePatient, scheduleAppointment;
 
     private PatientDAO patientDAO;
     private AppointmentDAO appointmentDAO;

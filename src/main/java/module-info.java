@@ -10,12 +10,11 @@ module com.example.joana {
     requires eu.hansolo.tilesfx;
     requires java.sql;
     requires javafx.graphics;
-    //requires com.example.joana;
+    requires com.calendarfx.view;
 
     opens com.example.joana.ui.controllers   to javafx.fxml;
     opens com.example.joana.model to javafx.base;
     exports com.example.joana.ui.controllers;
     exports com.example.joana.model;
-
     exports com.example.joana;
 }

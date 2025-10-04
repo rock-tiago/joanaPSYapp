@@ -84,7 +84,6 @@ public class PatientDAO {
         }
     }
 
-
     public Patient getPatientById(int id) throws SQLException {
         String sql = "SELECT * FROM patients WHERE id = ?";
 

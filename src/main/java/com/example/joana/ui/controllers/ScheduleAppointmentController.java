@@ -17,7 +17,6 @@ import java.util.List;
 
 public class ScheduleAppointmentController {
 
-    @FXML public ComboBox timePicker;
     @FXML private ComboBox<Patient> patientComboBox;
     @FXML private DatePicker datePicker;
     @FXML private TextField timeField;

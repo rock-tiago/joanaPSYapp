@@ -21,25 +21,17 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.List;
 
 public class MainController {
 
     @FXML private ScrollPane appointmentsContainer;
-    @FXML private HBox bottomButtons;
-    @FXML private TextArea notesFlow;
-    @FXML private VBox sidebar;
-    @FXML private HBox sidebarBtns;
     @FXML private StackPane contentArea;
     @FXML private VBox calendarSection;
     @FXML private HBox calendarContainer;
     @FXML private VBox container;
-    @FXML private Button addPatient;
-    @FXML private Button scheduleAppointment;
-    @FXML private Button deletePatient;
-    @FXML private Button updatePatient;
-
     private PatientDAO patientDAO;
     private AppointmentDAO appointmentDAO;
 
@@ -63,6 +55,8 @@ public class MainController {
             Object controller = loader.getController();
             if (controller instanceof MainMenuController) {
                 ((MainMenuController) controller).setDAOs(patientDAO, appointmentDAO);
+            } else if (controller instanceof CalendarController) {
+                ((CalendarController) controller).setDAO(appointmentDAO);
             }
         } catch(Exception e) {
             e.printStackTrace();
